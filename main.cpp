@@ -66,13 +66,46 @@ bool loadMedia()
     // Loading success flag
     bool success = true;
 
-    // Load the splash image from the file
-    gHelloWorld = SDL_LoadBMP( "02_getting_an_image_on_the_screen/hello_world.bmp");
-    if ( gHelloWorld == NULL );
+    // Load the default surface
+    gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ] = loadSurface( "04_key_presses/press.bmp");
+    if (gKeyPressSurfaces [ KEY_PRESS_SURFACE_DEFAULT] == NULL )
+
     {
-        printf("Unable to load image %s! SDL Error: %s\n", "02_getting_an_image_on_the_screen/hello_world.bmp", SDL_GetError() );
+        printf("Failed to load default image! \n");
         success = false;
     }
+
+    // Load up the surface 
+    gKeyPressSurfaces[ KEY_PRESS_SURFACE_UP ] = loadSurface( "04_key_presses/up.bmp" );
+    if ( gKeyPressSurfaces [ KEY_PRESS_SURFACE_DEFAULT ] == NULL )
+    {
+        printf( "Failed to load default image! \n ");
+        success = false;
+    }
+
+    gKeyPressSurfaces [ KEY_PRESS_SURFACE_DOWN ] = loadSurface( "04_key_presses/down.bmp");
+    if (gKeyPressSurfaces [KEY_PRESS_SURFACE_DOWN ] == NULL )
+    {
+        printf( "Failed to load down image! \n ");
+        success = false;
+    }
+
+    gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ] = loadSurface( "04_key_presses/right.bmp");
+    if (gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ] == NULL )
+    {
+        printf("Failed to load right image! \n ");
+        sucess = false;
+    }
+
+    gKeyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ] = loadSurface( "04_key_presses/left.bmp");
+    if (gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ] == NULL )
+    {
+        printf("Failed to load right image! \n ");
+        sucess = false;
+    }
+
+
+    // 
     
     return success;
 }
@@ -128,6 +161,36 @@ int main ( int argc, char* args[ ])
                         quit = true;
                     }
 
+                    // User presses a key 
+                    else if (e.type == SDL_KEYDOWN )
+                    {
+                        // Select surfaces based on key press
+                        switch( e.key.keysym.sym )
+                        {
+                            case SDLK_UP:
+							gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_UP ];
+							break;
+
+							case SDLK_DOWN:
+							gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ];
+							break;
+
+							case SDLK_LEFT:
+							gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ];
+							break;
+
+							case SDLK_RIGHT:
+							gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ];
+							break;
+
+							default:
+							gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
+							break;
+
+                        }
+
+                    }
+
                 }
 
             }
@@ -138,10 +201,6 @@ int main ( int argc, char* args[ ])
 
             // Update the surface of the window 
             SDL_UpdateWindowSurface( gWindow );
-
-
-            // Trick to get the window to stay open
-            SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ) { if ( e.type == SDL_QUIT ) quit = true; } }
 
         }
     }
