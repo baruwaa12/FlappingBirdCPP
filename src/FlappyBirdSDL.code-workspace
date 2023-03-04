@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../../Downloads/02_getting_an_image_on_the_screen/02_getting_an_image_on_the_screen"
+		},
+		{
+			"path": "../SDL2/x86_64-w64-mingw32/include"
+		},
+		{
+			"path": "../SDL2/x86_64-w64-mingw32/lib"
+		}
+	],
+	"settings": {}
+}
