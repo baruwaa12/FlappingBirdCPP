@@ -5,9 +5,12 @@
 #include <string>
 
 
+
 // These are the dimensions of the window 
 const int SCREEN_WIDTH = 900;
 const int SCREEN_HEIGHT = 507;
+
+
 
 // Start up SDL and create the window
 bool init();
@@ -26,6 +29,9 @@ SDL_Surface * BgSurface = NULL;
 
 // Background loaded to the screen
 SDL_Surface* gameBackground = NULL;
+
+// Pipe obstacle pair loaded to the screen
+SDL_Surface* pipeObstacleUp = NULL;
 
 
 bool init()
@@ -76,6 +82,15 @@ bool loadinMedia()
         success = false;
      }
 
+     pipeObstacleUp = SDL_LoadBMP("pipeUp.bmp");
+     if (pipeObstacleUp == NULL )
+     {
+        printf("Unable to load image %s! SDL Error: %s\n", "pipeUp.bmp", SDL_GetError() );
+        success = false;
+     }
+
+
+
      return success;
 }
 
@@ -85,6 +100,10 @@ void close()
     SDL_FreeSurface( BgSurface );
     BgSurface = NULL;
 
+    // Deallocate resources making up the surface for the pipes
+    SDL_FreeSurface( pipeObstacleUp );
+    pipeObstacleUp = NULL;
+
     // Destroy the window
     SDL_DestroyWindow( gameWindow );
     gameWindow = NULL;
@@ -93,6 +112,8 @@ void close()
     SDL_Quit();
 
 }
+
+
 
 
 // Game loop
@@ -105,15 +126,18 @@ int main( int argc, char* args[] )
 	}
 	else
 	{
-		//Load media
+		//Load in necessary media
 		if( !loadinMedia() )
 		{
 			printf( "Failed to load media!\n" );
 		}
 		else
 		{
-			//Apply the image
+			//Apply the image to the window surface
 			SDL_BlitSurface( gameBackground, NULL, BgSurface, NULL );
+
+            // Apply the pipe to the window surface
+            SDL_BlitSurface( pipeObstacleUp, NULL, BgSurface, NULL);
 			
 			//Update the surface
 			SDL_UpdateWindowSurface( gameWindow );
