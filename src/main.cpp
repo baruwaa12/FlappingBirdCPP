@@ -147,6 +147,8 @@ int main( int argc, char* args[] )
 		}
 	}
 
+    
+
 	//Free resources then close SDL
 	close();
 
